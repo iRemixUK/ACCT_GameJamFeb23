@@ -44,6 +44,9 @@ protected:
 		int CurrentAnimationFrame = 0;
 
 	UPROPERTY(VisibleAnywhere)
+		float AnimationFrameTimer = 0.f;
+
+	UPROPERTY(VisibleAnywhere)
 		EDirection CompassDirection = EDirection::South;
 
 	UPROPERTY(VisibleAnywhere)
@@ -120,6 +123,5 @@ public:
 		int FramesInCycle = 4;
 
 	UPROPERTY(EditAnywhere)
-		float AnimationSpeed = 0.1f;
-
+		float AnimationFrameTimeSpeed = 0.1f;
 };

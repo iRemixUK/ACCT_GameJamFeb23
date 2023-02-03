@@ -3,12 +3,25 @@
 
 #include "CustomBasePawn.h"
 
+#include "Components/SphereComponent.h"
+
 // Sets default values
 ACustomBasePawn::ACustomBasePawn()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	DefaultRoot = CreateDefaultSubobject<USceneComponent>(TEXT("DefaultRoot"));
+	SetRootComponent(DefaultRoot);
+
+	Collider = CreateDefaultSubobject<USphereComponent>(TEXT("Collider"));
+	Collider->SetupAttachment(DefaultRoot);
+
+	PlaneFront = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PlaneFront"));
+	PlaneFront->SetupAttachment(DefaultRoot);
+
+	PlaneBack = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PlaneBack"));
+	PlaneBack->SetupAttachment(DefaultRoot);
 }
 
 // Called when the game starts or when spawned
@@ -23,19 +36,24 @@ void ACustomBasePawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	
+
 	bHasMoved = false;
+
+
 }
 
 // Called to bind functionality to input
 void ACustomBasePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-
 }
 
 void ACustomBasePawn::Move(const FVector& Direction, const float DeltaTime)
 {
+	if (bHasMoved)
+		return;
+
 	bHasMoved = true;
 
 	constexpr float ToDeg = 180 / 3.14;
