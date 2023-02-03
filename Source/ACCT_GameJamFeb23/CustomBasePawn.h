@@ -44,7 +44,7 @@ protected:
 		int CurrentAnimationFrame = 0;
 
 	UPROPERTY(VisibleAnywhere)
-		EDirection CompassDirection;
+		EDirection CompassDirection = EDirection::South;
 
 	UPROPERTY(VisibleAnywhere)
 		bool bHasMoved = false;
@@ -67,7 +67,7 @@ public:
 		void OnInteractWithPlayer();
 
 	UFUNCTION(BlueprintCallable)
-		void Move(const FVector3f& Direction, const float DeltaTime);
+		void Move(const FVector& Direction, const float DeltaTime);
 
 	// Events
 	UFUNCTION(BlueprintNativeEvent)

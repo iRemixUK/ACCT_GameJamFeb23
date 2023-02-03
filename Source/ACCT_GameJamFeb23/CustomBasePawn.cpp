@@ -34,8 +34,21 @@ void ACustomBasePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 }
 
-void ACustomBasePawn::Move(const FVector3f& Direction, const float DeltaTime)
+void ACustomBasePawn::Move(const FVector& Direction, const float DeltaTime)
 {
+	bHasMoved = true;
+
+	constexpr float ToDeg = 180 / 3.14;
+	const auto NorthVector = FVector(1.f, 0.f, 0.f);
+	const double Angle = acosf(NorthVector.Dot(Direction.GetSafeNormal())) * ToDeg;
+	
+	if (Angle > 45.f && Angle < 135.f)
+		CompassDirection = Direction.Y < 0.f ? EDirection::West : EDirection::East;
+	else
+		CompassDirection = Direction.X < 0.f ? EDirection::South : EDirection::North;
+
+	const auto CurrentLocation = GetActorLocation();
+	SetActorLocation(CurrentLocation + Direction * MovementSpeed * DeltaTime);
 }
 
 void ACustomBasePawn::OnColliderLeave_Implementation(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
