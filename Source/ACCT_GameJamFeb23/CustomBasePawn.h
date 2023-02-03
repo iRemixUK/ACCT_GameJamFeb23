@@ -7,6 +7,7 @@
 #include "CustomBasePawn.generated.h"
 
 class USphereComponent;
+class UNiagaraSystem;
 
 UENUM()
 enum class EDirection
@@ -30,8 +31,15 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	float MockCoro_FlipAnimation_ZAngle = 0.0f;
+	bool MockCoro_FlipAnimation_TurningForward = false;
+	bool MockCoro_FlipAnimation(const float DeltaTime);
+
+	UPROPERTY(EditAnywhere)
 		int Life = 100;
+
+	UPROPERTY(EditAnywhere)
+		int MaxLife = 100;
 
 	UPROPERTY(EditAnywhere)
 		int DamagePower = 5;
@@ -41,7 +49,7 @@ protected:
 
 	// SpriteSheet based
 	UPROPERTY(VisibleAnywhere)
-		int CurrentAnimationFrame = 0;
+		int CurrentAnimationFrame = -1;
 
 	UPROPERTY(VisibleAnywhere)
 		float AnimationFrameTimer = 0.f;
@@ -51,6 +59,10 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 		bool bHasMoved = false;
+
+private:
+	UFUNCTION()
+		void UpdateMaterial(const float DeltaTime);
 
 public:	
 	// Called every frame
@@ -65,6 +77,12 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent)
 		void Attack();
+
+	UFUNCTION(BlueprintNativeEvent)
+		void Damage(const int ToDamage);
+
+	UFUNCTION(BlueprintNativeEvent)
+		void Heal(const int ToHeal);
 
 	UFUNCTION(BlueprintNativeEvent)
 		void OnInteractWithPlayer();
@@ -113,6 +131,9 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		USoundBase* CharacterMovement;
+
+	UPROPERTY(EditAnywhere)
+		UNiagaraSystem* DieParticles;
 
 	// Assets Instances
 	UPROPERTY(EditAnywhere)

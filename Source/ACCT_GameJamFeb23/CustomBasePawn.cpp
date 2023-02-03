@@ -2,7 +2,7 @@
 
 
 #include "CustomBasePawn.h"
-
+#include "NiagaraFunctionLibrary.h"
 #include "Components/SphereComponent.h"
 
 // Sets default values
@@ -28,7 +28,43 @@ ACustomBasePawn::ACustomBasePawn()
 void ACustomBasePawn::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	if (IsValid(SpriteSheetMaterial))
+		MaterialInstance = UMaterialInstanceDynamic::Create(SpriteSheetMaterial, NULL);
+
+	if (IsValid(PlaneFront))
+		PlaneFront->SetMaterial(0, MaterialInstance);
+
+	if (IsValid(PlaneBack))
+		PlaneBack->SetMaterial(0, MaterialInstance);
+
+	if (IsValid(CharacterSpritesheet) && IsValid(MaterialInstance))
+		MaterialInstance->SetTextureParameterValue("SpriteSheet", CharacterSpritesheet);
+}
+
+void ACustomBasePawn::UpdateMaterial(const float DeltaTime)
+{
+	if (bHasMoved)
+	{
+		AnimationFrameTimer += DeltaTime;
+		if (AnimationFrameTimer > AnimationFrameTimeSpeed)
+		{
+			AnimationFrameTimer = 0.f;
+			CurrentAnimationFrame++;
+			CurrentAnimationFrame %= FramesInCycle;
+		}
+	}
+	else
+	{
+		AnimationFrameTimer = 0.f;
+		CurrentAnimationFrame = -1;
+	}
+
+	if (IsValid(MaterialInstance))
+	{
+		MaterialInstance->SetScalarParameterValue("Direction", static_cast<float>(CompassDirection));
+		MaterialInstance->SetScalarParameterValue("AnimationFrame", CurrentAnimationFrame);
+	}
 }
 
 // Called every frame
@@ -36,17 +72,27 @@ void ACustomBasePawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	
+	UpdateMaterial(DeltaTime);
 
 	bHasMoved = false;
-
-
 }
 
 // Called to bind functionality to input
 void ACustomBasePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+}
+
+void ACustomBasePawn::Damage_Implementation(const int ToDamage)
+{
+	Life -= Life - ToDamage;
+	if (Life <= 0)
+		Die();
+}
+
+void ACustomBasePawn::Heal_Implementation(const int ToHeal)
+{
+	Life = FMath::Min(Life + ToHeal, MaxLife);
 }
 
 void ACustomBasePawn::Move(const FVector& Direction, const float DeltaTime)
@@ -75,7 +121,7 @@ void ACustomBasePawn::OnColliderLeave_Implementation(UPrimitiveComponent* Overla
 }
 
 void ACustomBasePawn::OnColliderEnter_Implementation(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
-                                                     UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 }
 
@@ -89,5 +135,9 @@ void ACustomBasePawn::Attack_Implementation()
 
 void ACustomBasePawn::Die_Implementation()
 {
+	if (IsValid(DieParticles))
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, DieParticles, GetActorLocation());
+
+	Destroy();
 }
 
