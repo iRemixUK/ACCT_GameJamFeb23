@@ -10,8 +10,8 @@ class USphereComponent;
 class UCapsuleComponent;
 class UNiagaraSystem;
 
-UENUM()
-enum class EDirection
+UENUM(BlueprintType)
+enum EDirection
 {
 	North,
 	South,
@@ -55,8 +55,8 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 		float AnimationFrameTimer = 0.f;
 
-	UPROPERTY(VisibleAnywhere)
-		EDirection CompassDirection = EDirection::South;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+		TEnumAsByte<EDirection> CompassDirection = EDirection::South;
 
 	UPROPERTY(VisibleAnywhere)
 		bool bHasMoved = false;
@@ -73,26 +73,26 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	// Functionality
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 		void Die();
 
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 		void Attack();
 
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 		void Damage(const int ToDamage);
 
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 		void Heal(const int ToHeal);
 
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 		void OnInteractWithPlayer();
 
 	UFUNCTION(BlueprintCallable)
 		void Move(const FVector& Direction, const float DeltaTime);
 
 	// Events
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 		void OnColliderEnter(
 			UPrimitiveComponent* OverlappedComp,
 			AActor* OtherActor,
@@ -102,7 +102,7 @@ public:
 			const FHitResult& SweepResult
 		);
 
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 		void OnColliderLeave(
 			UPrimitiveComponent* OverlappedComp,
 			AActor* OtherActor,
