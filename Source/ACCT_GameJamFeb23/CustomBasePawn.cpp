@@ -18,6 +18,8 @@ ACustomBasePawn::ACustomBasePawn()
 
 	Collider = CreateDefaultSubobject<USphereComponent>(TEXT("Collider"));
 	Collider->SetupAttachment(CapsuleCollider);
+	Collider->OnComponentBeginOverlap.AddDynamic(this, &ACustomBasePawn::OnColliderEnter);
+	Collider->OnComponentEndOverlap.AddDynamic(this, &ACustomBasePawn::OnColliderLeave);
 
 	PlaneFront = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PlaneFront"));
 	PlaneFront->SetupAttachment(CapsuleCollider);
