@@ -100,7 +100,7 @@ void ACustomBasePawn::Heal_Implementation(const int ToHeal)
 
 void ACustomBasePawn::Move(const FVector& Direction, const float DeltaTime)
 {
-	if (bHasMoved)
+	if (bHasMoved || Direction.Length())
 		return;
 
 	if (IsValid(CharacterMovementSound))
