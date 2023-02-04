@@ -111,10 +111,10 @@ public:
 
 	// Components Hierarchy
 	UPROPERTY(VisibleAnywhere)
-		USceneComponent* DefaultRoot;
+		USphereComponent* Collider;
 
 	UPROPERTY(VisibleAnywhere)
-		USphereComponent* Collider;
+		UCapsuleComponent* CapsuleCollider;
 
 	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* PlaneFront;
@@ -130,13 +130,13 @@ public:
 		UMaterial* SpriteSheetMaterial;
 
 	UPROPERTY(EditAnywhere)
-		USoundBase* CharacterMovement;
+		USoundBase* CharacterMovementSound;
 
 	UPROPERTY(EditAnywhere)
 		UNiagaraSystem* DieParticles;
 
 	// Assets Instances
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(VisibleAnywhere)
 		UMaterialInstanceDynamic* MaterialInstance;
 
 	// Properties

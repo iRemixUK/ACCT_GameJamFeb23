@@ -3,7 +3,9 @@
 
 #include "CustomBasePawn.h"
 #include "NiagaraFunctionLibrary.h"
+#include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "Components/SphereComponent.h"
+#include "Components/CapsuleComponent.h"
 
 // Sets default values
 ACustomBasePawn::ACustomBasePawn()
@@ -11,17 +13,17 @@ ACustomBasePawn::ACustomBasePawn()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	DefaultRoot = CreateDefaultSubobject<USceneComponent>(TEXT("DefaultRoot"));
-	SetRootComponent(DefaultRoot);
+	CapsuleCollider = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleCollider"));
+	SetRootComponent(CapsuleCollider);
 
 	Collider = CreateDefaultSubobject<USphereComponent>(TEXT("Collider"));
-	Collider->SetupAttachment(DefaultRoot);
+	Collider->SetupAttachment(CapsuleCollider);
 
 	PlaneFront = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PlaneFront"));
-	PlaneFront->SetupAttachment(DefaultRoot);
+	PlaneFront->SetupAttachment(CapsuleCollider);
 
 	PlaneBack = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PlaneBack"));
-	PlaneBack->SetupAttachment(DefaultRoot);
+	PlaneBack->SetupAttachment(CapsuleCollider);
 }
 
 // Called when the game starts or when spawned
@@ -64,6 +66,7 @@ void ACustomBasePawn::UpdateMaterial(const float DeltaTime)
 	{
 		MaterialInstance->SetScalarParameterValue("Direction", static_cast<float>(CompassDirection));
 		MaterialInstance->SetScalarParameterValue("AnimationFrame", CurrentAnimationFrame);
+		MaterialInstance->SetScalarParameterValue("MaxFrames", FramesInCycle);
 	}
 }
 
@@ -99,6 +102,9 @@ void ACustomBasePawn::Move(const FVector& Direction, const float DeltaTime)
 {
 	if (bHasMoved)
 		return;
+
+	if (IsValid(CharacterMovementSound))
+		UGameplayStatics::PlaySoundAtLocation(this, CharacterMovementSound, GetActorLocation());
 
 	bHasMoved = true;
 
