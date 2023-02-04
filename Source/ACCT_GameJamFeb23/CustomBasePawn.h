@@ -10,8 +10,8 @@ class USphereComponent;
 class UCapsuleComponent;
 class UNiagaraSystem;
 
-UENUM()
-enum class EDirection
+UENUM(BlueprintType)
+enum EDirection
 {
 	North,
 	South,
@@ -56,7 +56,7 @@ protected:
 		float AnimationFrameTimer = 0.f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-		EDirection CompassDirection = EDirection::South;
+		TEnumAsByte<EDirection> CompassDirection = EDirection::South;
 
 	UPROPERTY(VisibleAnywhere)
 		bool bHasMoved = false;
