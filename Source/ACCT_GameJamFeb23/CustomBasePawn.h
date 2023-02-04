@@ -7,6 +7,7 @@
 #include "CustomBasePawn.generated.h"
 
 class USphereComponent;
+class UCapsuleComponent;
 class UNiagaraSystem;
 
 UENUM()
