@@ -36,16 +36,16 @@ protected:
 	bool MockCoro_FlipAnimation_TurningForward = false;
 	bool MockCoro_FlipAnimation(const float DeltaTime);
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int Life = 100;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int MaxLife = 100;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int DamagePower = 5;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float MovementSpeed = 1.0f;
 
 	// SpriteSheet based
