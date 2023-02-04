@@ -114,13 +114,13 @@ public:
 	UPROPERTY(VisibleAnywhere)
 		USphereComponent* Collider;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		UCapsuleComponent* CapsuleCollider;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		UStaticMeshComponent* PlaneFront;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		UStaticMeshComponent* PlaneBack;
 
 	// Assets
