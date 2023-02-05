@@ -114,7 +114,7 @@ public:
 		);
 
 	// Components Hierarchy
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		USphereComponent* Collider;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
