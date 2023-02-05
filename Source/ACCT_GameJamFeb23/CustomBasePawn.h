@@ -48,6 +48,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float MovementSpeed = 1.0f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		float KillZ = -10;
+
 	// SpriteSheet based
 	UPROPERTY(VisibleAnywhere)
 		int CurrentAnimationFrame = -1;
@@ -133,11 +136,11 @@ public:
 	UPROPERTY(EditAnywhere)
 		USoundBase* CharacterMovementSound;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 		UNiagaraSystem* DieParticles;
 
 	// Assets Instances
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		UMaterialInstanceDynamic* MaterialInstance;
 
 	// Properties

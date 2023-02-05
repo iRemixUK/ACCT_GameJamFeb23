@@ -80,6 +80,9 @@ void ACustomBasePawn::Tick(float DeltaTime)
 	UpdateMaterial(DeltaTime);
 
 	bHasMoved = false;
+
+	if (GetActorLocation().Z < KillZ)
+		Die();
 }
 
 // Called to bind functionality to input
