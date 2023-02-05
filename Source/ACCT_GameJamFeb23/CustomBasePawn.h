@@ -52,10 +52,10 @@ protected:
 		float KillZ = -10;
 
 	// SpriteSheet based
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		int CurrentAnimationFrame = -1;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		float AnimationFrameTimer = 0.f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
