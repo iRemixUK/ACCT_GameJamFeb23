@@ -90,7 +90,7 @@ void ACustomBasePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 void ACustomBasePawn::Damage_Implementation(const int ToDamage)
 {
-	Life -= Life - ToDamage;
+	Life = Life - ToDamage;
 	if (Life <= 0)
 		Die();
 }
